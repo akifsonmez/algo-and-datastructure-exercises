@@ -1,10 +1,10 @@
-// space => O(n) => level of call stack tree
-// time => (2**n)
-
 const {performance} = require('perf_hooks')
+
 let start;
 let end;
 
+// space => O(n) => level of call stack tree
+// time => (2**n) => function calls itself twice
 const fib = (n) => {
     if (n <= 2) return 1;
     return fib(n - 1) + fib(n - 2);
@@ -15,7 +15,9 @@ end = performance.now();
 console.log(`fib: ${end - start}`);
 
 
-// dynamic programming
+// dynamic programming (memoization)
+// space => O(n) => level of call stack tree
+// time => O(n)
 const fibWithMemo = (n, memo = {}) => {
     if (n in memo) return memo[n];
     if (n <= 2) return 1;
@@ -29,6 +31,8 @@ end = performance.now();
 console.log(`fib with memo: ${end - start}`);
 
 // with array
+// time O(n)
+// space O(n)
 const fibWithArray = (n) => {
     let fib = [1, 1];
     for (let i = 3; i <= n; i++) {
@@ -41,3 +45,21 @@ start = performance.now();
 console.log(fibWithArray(40));
 end = performance.now();
 console.log(`fib with array: ${end - start}`);
+
+// with array
+// time O(n)
+// space O(1) ? not sure
+const fibWithArray2 = (n) => {
+    let fib = [1, 1];
+    for (let i = 3; i <= n; i++) {
+        let next = fib[0] + fib[1]
+        fib[0] = fib[1];
+        fib[1] = next;
+    }
+    return fib[1];
+}
+
+start = performance.now();
+console.log(fibWithArray2(40));
+end = performance.now();
+console.log(`fib with array2: ${end - start}`);
